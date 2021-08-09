@@ -36,7 +36,7 @@
 
 #include <boost/assert.hpp>
 
-#if TBB_VERSION_MAJOR == 2020
+#if TBB_VERSION_MAJOR >= 2020
 #include <tbb/global_control.h>
 #else
 #include <tbb/task_scheduler_init.h>
@@ -49,7 +49,7 @@ namespace contractor
 
 int Contractor::Run()
 {
-#if TBB_VERSION_MAJOR == 2020
+#if TBB_VERSION_MAJOR >= 2020
     tbb::global_control gc(tbb::global_control::max_allowed_parallelism,
                            config.requested_num_threads);
 #else

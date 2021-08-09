@@ -25,7 +25,7 @@
 #include <vector>
 
 // explicit TBB scheduler init to register resources cleanup at exit
-#if TBB_VERSION_MAJOR == 2020
+#if TBB_VERSION_MAJOR >= 2020
 #include <tbb/global_control.h>
 tbb::global_control scheduler(tbb::global_control::max_allowed_parallelism, 2);
 #else
