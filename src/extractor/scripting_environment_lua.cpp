@@ -644,7 +644,13 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
                 context.properties.SetMaxSpeedForMapMatching(max_speed_for_map_matching.value());
 
             sol::optional<bool> continue_straight_at_waypoint =
-                properties["continue_straight_at_waypoint"];
+                // this is the longest key used to index properties at 29 characters + a null at the end for a 30-byte
+                // C string.
+                // when compiling with GCC 10.1, we get an array-bounds error with all of the other references into
+                // properties saying they cannot be accessed at index 30. I suspect that the array-bounds checker is seeing
+                // this line, and assuming that all accesses into the properties table will read 30 characters of the key
+                // even if they will not, and failing. I add six characters and recompile to see if the error is now about index 36.
+                properties["continue_straight_at_waypoint_xyzzy"];
             if (continue_straight_at_waypoint != sol::nullopt)
                 context.properties.continue_straight_at_waypoint =
                     continue_straight_at_waypoint.value();
